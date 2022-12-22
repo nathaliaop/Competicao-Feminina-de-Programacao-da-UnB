@@ -50,38 +50,17 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     
-    long long n, q; cin >> n >> q;
-    pair<int, int> arr[n];
-    long long sum = 0;
+    int d, x1, d1, x2, d2; cin >> d >> x1 >> d1 >> x2 >> d2;
     
-    for (int i = 0; i < n; i++) {
-        int num; cin >> num;
-        arr[i] = {num, -1};
-        sum += num;
-    }
+    double n = (d - d1) / (double)x1;
+    double s = (d - d2) / (double)x2;
     
-    int val = 0;
-    int lastquery2 = -1;
-    for (int i = 0; i < q; i++) {
-        int op; cin >> op;
-        if (op == 1) {
-            int idx, x; cin >> idx >> x;
-            if (arr[idx - 1].second < lastquery2) sum += x - val;
-            else sum += x - arr[idx - 1].first;
-            arr[idx - 1] = {x, i};
-        }
-        else {
-            int x; cin >> x;
-            sum = n * x;
-            lastquery2 = i;
-            val = x;
-        }
-        
-        cout << sum << '\n';
-    }
+    if (s > n) cout << "Naruto\n";
+    else if (n > s) cout << "Sasuke\n";
+    else cout << "Empate\n";
 
     return 0;
-}
+}    
 \end{lstlisting}
 \newpage
 \begin{center}\section{Black Fraude}\end{center}
@@ -92,39 +71,39 @@ Essa é uma questão clássica de Programação Dinâmica. Para maximizar a quan
 
 using namespace std;
 
+const int MAX = 1e2+7;
+const int MAX2 = 1e4+7;
+
+int n, d;
+int arr[MAX], dp[MAX][MAX2];
+
+int solve(int idx, int gastou) {
+    
+    if (idx >= n) return 0;
+    
+    if (dp[idx][gastou] != -1) return dp[idx][gastou];
+    
+    int pega = 0;
+    if (gastou + arr[idx] <= d) pega = solve(idx + 2, gastou + arr[idx]) + 1;
+    int npega = solve(idx + 1, gastou);
+    
+    
+    return dp[idx][gastou] = max(pega, npega);
+}
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     
-    long long n, q; cin >> n >> q;
-    pair<int, int> arr[n];
-    long long sum = 0;
+    cin >> n >> d;
+    
+    memset(dp, -1, sizeof(dp));
     
     for (int i = 0; i < n; i++) {
-        int num; cin >> num;
-        arr[i] = {num, -1};
-        sum += num;
+        cin >> arr[i];
     }
     
-    int val = 0;
-    int lastquery2 = -1;
-    for (int i = 0; i < q; i++) {
-        int op; cin >> op;
-        if (op == 1) {
-            int idx, x; cin >> idx >> x;
-            if (arr[idx - 1].second < lastquery2) sum += x - val;
-            else sum += x - arr[idx - 1].first;
-            arr[idx - 1] = {x, i};
-        }
-        else {
-            int x; cin >> x;
-            sum = n * x;
-            lastquery2 = i;
-            val = x;
-        }
-        
-        cout << sum << '\n';
-    }
+    cout << solve(0, 0) << '\n';
 
     return 0;
 }
