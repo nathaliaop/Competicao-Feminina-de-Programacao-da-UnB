@@ -41,3 +41,4 @@
 
 ### Agradecimentos
 - Caleb Martim de Oliveira
+- Victor Manuel Brito Santos
